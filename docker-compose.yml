@@ -11,13 +11,39 @@ services:
     volumes:
       - ./node-admin/node_modules:/app/node_modules
       - ./node-admin:/app
+  front:
+    build:
+      context: ./vue-admin
+      dockerfile: Dockerfile
+    environment:
+      - NODE_ENV=developement
+    ports:
+      - '8080:8080'
+    volumes:
+      - ./vue-admin/node_modules:/app/node_modules
+      - ./vue-admin:/app
 
   npm:
     build:
-      context: ./node-admin
+      # context: ./node-admin
+      context: ./vue-admin
       dockerfile: Dockerfile
     working_dir: /app
     entrypoint: ['npm']
     volumes:
-      - ./node-admin:/app
-      - ./node-admin/node_modules:/app/node_modules
+      # - ./node-admin:/app
+      # - ./node-admin/node_modules:/app/node_modules
+      - ./vue-admin:/app
+      - ./vue-admin/node_modules:/app/node_modules
+
+  vue-create:
+    build:
+      context: ./vue-admin
+      dockerfile: Dockerfile
+    working_dir: /app
+    command: vue create .
+    volumes:
+      - ./vue-admin:/app
+      - ./vue-admin/node_modules:/app/node_modules
+    stdin_open: true
+    tty: true

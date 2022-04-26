@@ -7,7 +7,7 @@ services:
     environment:
       - NODE_ENV=development
     ports:
-      - '3000:3000'
+      - '8000:8000'
     volumes:
       - ./node-admin/node_modules:/app/node_modules
       - ./node-admin:/app

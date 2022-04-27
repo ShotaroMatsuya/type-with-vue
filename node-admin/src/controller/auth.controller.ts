@@ -3,14 +3,15 @@ import { RegisterValidation } from '../validation/register.validation';
 import { getManager } from 'typeorm';
 import { User } from '../entity/user.entity';
 import bcryptjs from 'bcryptjs';
-import { sign } from 'jsonwebtoken';
+import { sign, verify } from 'jsonwebtoken';
 
 interface body {
+  id?: number;
   first_name: string;
   last_name: string;
   email: string;
-  password: string;
-  password_confirm: string;
+  password?: string;
+  password_confirm?: string;
 }
 
 export const Register = async (req: Request, res: Response) => {
@@ -74,4 +75,20 @@ export const Login = async (req: Request, res: Response) => {
   res.send({
     message: 'success',
   });
+};
+
+export const AuthenticatedUser = async (req: Request, res: Response) => {
+  const jwt = req.cookies['jwt'];
+
+  const payload: any = verify(jwt, 'secret');
+
+  if (!payload) {
+    return res.status(401).send({ message: 'unauthenticated' });
+  }
+
+  const repository = getManager().getRepository(User);
+
+  const { password, ...user } = await repository.findOne(payload.id);
+
+  res.send(user);
 };

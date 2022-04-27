@@ -1,5 +1,8 @@
 import { Request, Response } from 'express';
 import { RegisterValidation } from '../validation/register.validation';
+import { getManager } from 'typeorm';
+import { User } from '../entity/user.entity';
+import bcryptjs from 'bcryptjs';
 
 interface body {
   first_name: string;
@@ -9,7 +12,7 @@ interface body {
   password_confirm: string;
 }
 
-export const Register = (req: Request, res: Response) => {
+export const Register = async (req: Request, res: Response) => {
   const body: body = req.body;
 
   const { error } = RegisterValidation.validate(body);
@@ -23,5 +26,15 @@ export const Register = (req: Request, res: Response) => {
       message: "Password's do not match",
     });
   }
-  res.send(req.body);
+
+  const repository = getManager().getRepository(User);
+
+  const { password, ...user } = await repository.save({
+    first_name: body.first_name,
+    last_name: body.last_name,
+    email: body.email,
+    password: await bcryptjs.hash(body.password, 10),
+  });
+
+  res.send(user);
 };

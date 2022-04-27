@@ -3,6 +3,7 @@ import { RegisterValidation } from '../validation/register.validation';
 import { getManager } from 'typeorm';
 import { User } from '../entity/user.entity';
 import bcryptjs from 'bcryptjs';
+import { sign } from 'jsonwebtoken';
 
 interface body {
   first_name: string;
@@ -55,7 +56,22 @@ export const Login = async (req: Request, res: Response) => {
       message: 'invalid credentials!',
     });
   }
-  const { password, ...data } = user;
 
-  res.send(data);
+  const token = sign(
+    {
+      id: user.id,
+    },
+    'secret'
+  );
+
+  // httpOnly cookie
+  // It's only the feature of each of the only cookies is that they are not accessible by the frontend only.
+  // backend can use these cookie, which means that frontend cannot access it.
+  res.cookie('jwt', token, {
+    httpOnly: true,
+    maxAge: 24 * 60 * 60 * 1000, // 1day
+  });
+  res.send({
+    message: 'success',
+  });
 };

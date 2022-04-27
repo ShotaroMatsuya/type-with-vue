@@ -1,11 +1,12 @@
-import { Request, Response } from 'express';
+import { Request, Response, RequestHandler } from 'express';
 import { RegisterValidation } from '../validation/register.validation';
 import { getManager } from 'typeorm';
 import { User } from '../entity/user.entity';
 import bcryptjs from 'bcryptjs';
 import { sign, verify } from 'jsonwebtoken';
 
-interface body {
+// bodyオブジェクトの型指定
+interface UserInput {
   id?: number;
   first_name: string;
   last_name: string;
@@ -15,7 +16,7 @@ interface body {
 }
 
 export const Register = async (req: Request, res: Response) => {
-  const body: body = req.body;
+  const body: UserInput = req.body;
 
   const { error } = RegisterValidation.validate(body);
 
@@ -89,4 +90,32 @@ export const Logout = async (req: Request, res: Response) => {
   res.send({
     message: 'success',
   });
+};
+
+export const UpdateInfo = async (req: Request, res: Response) => {
+  const user: UserInput = req['user'];
+
+  const repository = getManager().getRepository(User);
+
+  await repository.update(user.id, req.body);
+
+  const { password, ...data } = await repository.findOne(user.id);
+
+  res.send(data);
+};
+
+export const updatePassword: RequestHandler = async (req, res) => {
+  const user = req['user'];
+
+  if (req.body.password !== req.body.password_confirm) {
+    return res.status(400).send({
+      message: "Password's do not match",
+    });
+  }
+  const repository = getManager().getRepository(User);
+  await repository.update(user.id, {
+    password: await bcryptjs.hash(req.body.password, 10),
+  });
+  const { password, ...data } = user;
+  res.send(data);
 };

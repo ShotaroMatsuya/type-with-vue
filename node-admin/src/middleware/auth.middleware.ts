@@ -3,6 +3,7 @@ import { verify } from 'jsonwebtoken';
 import { getManager } from 'typeorm';
 import { User } from '../entity/user.entity';
 
+// カスタムリクエストタイプ
 interface MyRequestLocals extends Request {
   user: User;
 }

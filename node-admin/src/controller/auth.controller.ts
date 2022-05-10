@@ -93,7 +93,7 @@ export const Logout = async (req: Request, res: Response) => {
 };
 
 export const UpdateInfo = async (req: Request, res: Response) => {
-  const user: UserInput = req['user'];
+  const user: UserInput = req['user']; // パターン2
 
   const repository = getManager().getRepository(User);
 
@@ -105,7 +105,7 @@ export const UpdateInfo = async (req: Request, res: Response) => {
 };
 
 export const updatePassword: RequestHandler = async (req, res) => {
-  const user = req['user'];
+  const user = (req.body as { user: User }).user; // パターン1
 
   if (req.body.password !== req.body.password_confirm) {
     return res.status(400).send({

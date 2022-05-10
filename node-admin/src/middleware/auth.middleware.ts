@@ -9,7 +9,7 @@ interface MyRequestLocals extends Request {
 }
 
 export const AuthMiddleware: RequestHandler = async (
-  req: MyRequestLocals,
+  req: MyRequestLocals, //パターン3
   res,
   next
 ) => {

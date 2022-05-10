@@ -1,0 +1,9 @@
+{
+  "typescript.tsdk": "./vue-admin/node_modules/typescript/lib",
+  "workbench.colorCustomizations": {
+    "titleBar.activeBackground": "#4dff00",
+    "titleBar.activeForeground": "#000000",
+    "activityBar.background": "#4dff00",
+    "activityBar.foreground": "#000000"
+  }
+}

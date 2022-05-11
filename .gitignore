@@ -2,3 +2,5 @@ node_modules
 /dist
 # .env
 # .ormconfig.json
+
+node-admin/uploads/*

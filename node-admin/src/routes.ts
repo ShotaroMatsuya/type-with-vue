@@ -33,7 +33,7 @@ import {
   UpdateProduct,
 } from './controller/product.controller';
 import { Upload } from './controller/image.controller';
-import { Orders } from './controller/order.cotroller';
+import { Export, Orders } from './controller/order.cotroller';
 
 export const routes = (router: Router) => {
   router.post('/api/register', Register);
@@ -67,4 +67,6 @@ export const routes = (router: Router) => {
   router.use('/api/uploads', express.static('./uploads'));
 
   router.get('/api/orders', AuthMiddleware, Orders);
+
+  router.post('/api/export', AuthMiddleware, Export);
 };

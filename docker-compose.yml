@@ -36,16 +36,16 @@ services:
 
   npm:
     build:
-      context: ./node-admin
-      # context: ./vue-admin
+      # context: ./node-admin
+      context: ./vue-admin
       dockerfile: Dockerfile
     working_dir: /app
     entrypoint: ['npm']
     volumes:
-      - ./node-admin:/app
-      - ./node-admin/node_modules:/app/node_modules
-      # - ./vue-admin:/app
-      # - ./vue-admin/node_modules:/app/node_modules
+      # - ./node-admin:/app
+      # - ./node-admin/node_modules:/app/node_modules
+      - ./vue-admin:/app
+      - ./vue-admin/node_modules:/app/node_modules
 
   vue-create:
     build:

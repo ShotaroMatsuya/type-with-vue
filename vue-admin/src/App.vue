@@ -1,29 +1,6 @@
 <template>
-  <header-nav />
-  <div class="container-fluid">
-    <div class="row">
-      <header-menu />
-
-      <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-        <router-view />
-      </main>
-    </div>
-  </div>
+  <router-view />
 </template>
-<script>
-import HeaderMenu from '@/components/HeaderMenu.vue';
-import HeaderNav from './components/HeaderNav.vue';
-
-export default {
-  components: {
-    HeaderNav,
-    HeaderMenu,
-  },
-  setup() {
-    return {};
-  },
-};
-</script>
 
 <style>
 body {

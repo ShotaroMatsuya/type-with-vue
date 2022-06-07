@@ -1,15 +1,32 @@
 <template>
   <main class="form-signin">
-    <form>
+    <form @submit.prevent="submit">
       <h1 class="h3 mb-3 fw-normal">Please register</h1>
 
-      <input class="form-control" placeholder="First Name" required />
-
-      <input class="form-control" placeholder="Last Name" required />
-
-      <input type="email" class="form-control" placeholder="Email" required />
+      <input
+        v-model="firstName"
+        class="form-control"
+        placeholder="First Name"
+        required
+      />
 
       <input
+        v-model="lastName"
+        class="form-control"
+        placeholder="Last Name"
+        required
+      />
+
+      <input
+        v-model="email"
+        type="email"
+        class="form-control"
+        placeholder="Email"
+        required
+      />
+
+      <input
+        v-model="password"
         type="password"
         class="form-control"
         placeholder="Password"
@@ -17,6 +34,7 @@
       />
 
       <input
+        v-model="passwordConfirm"
         type="password"
         class="form-control"
         placeholder="Password Confirm"
@@ -28,13 +46,28 @@
   </main>
 </template>
 
-<script>
+<script lang="ts">
 export default {
   name: 'RegisterPage',
   data() {
     return {
-      count: 0,
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
+      passwordConfirm: '',
     };
+  },
+  methods: {
+    submit() {
+      console.log({
+        first_name: this.firstName,
+        last_name: this.last_name,
+        email: this.email,
+        password: this.password,
+        password_confirm: this.passwordConfirm,
+      });
+    },
   },
 };
 </script>

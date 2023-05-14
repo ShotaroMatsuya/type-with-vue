@@ -7,7 +7,8 @@
     "start": "nodemon src/index.ts",
     "roles:seed": "ts-node src/seeder/role.seeder.ts",
     "products:seed": "ts-node src/seeder/product.seeder.ts",
-    "orders:seed": "ts-node src/seeder/order.seeder.ts"
+    "orders:seed": "ts-node src/seeder/order.seeder.ts",
+    "users:seed": "ts-node src/seeder/user.seeder.ts"
   },
   "keywords": [],
   "author": "",

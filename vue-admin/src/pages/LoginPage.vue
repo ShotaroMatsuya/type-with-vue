@@ -55,8 +55,7 @@ export default {
         {
           email: this.email,
           password: this.password,
-        },
-        { withCredentials: true }
+        }
       );
       await this.$router.push('/');
     },

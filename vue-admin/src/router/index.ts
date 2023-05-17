@@ -10,7 +10,8 @@ import Roles from '@/pages/roles/Roles.vue'
 import RoleCreate from '@/pages/roles/RoleCreate.vue'
 import RoleEdit from '@/pages/roles/RoleEdit.vue'
 import ProductsPage from '@/pages/products/Products.vue'
-
+import ProductCreate from '@/pages/products/ProductCreate.vue'
+import ProductEdit from '@/pages/products/ProductEdit.vue'
 
 
 const routes: Array<RouteRecordRaw> = [
@@ -28,6 +29,8 @@ const routes: Array<RouteRecordRaw> = [
       { path: '/roles/create', component: RoleCreate },
       { path: '/roles/:id/edit', component: RoleEdit },
       { path: '/products', component: ProductsPage },
+      { path: '/products/create', component: ProductCreate },
+      { path: '/products/:id/edit', component: ProductEdit },
     ],
   },
 ];

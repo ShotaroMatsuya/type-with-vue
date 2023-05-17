@@ -29,28 +29,20 @@
       </tbody>
     </table>
   </div>
-  <nav>
-    <ul class="pagination">
-      <li class="page-item">
-        <a href="javascript:void(0)" class="page-link" @click="prev">Previous</a>
-      </li>
-      <li class="page-item">
-        <a href="javascript:void(0)" class="page-link" @click="next">Next</a>
-      </li>
-    </ul>
-  </nav>
+  <ButtonPaginator :last-page="lastPage" @page-changed="load($event)"/>
+
 </template>
 
 <script lang="ts">
 import axios from 'axios';
 import {User} from '@/models/user'
-
+import ButtonPaginator from '@/components/ButtonPaginator.vue'
 export default {
   name: 'UsersPage',
+  components: {ButtonPaginator},
   data() {
     return {
       users: [] as Array<any>,
-      page: 1,
       lastPage: 0
     }
   },
@@ -63,20 +55,10 @@ export default {
     await this.load()
   },
   methods: {
-    async load() {
-      const {data} = await axios.get(`users?page=${this.page}`);
+    async load(page = 1) {
+      const {data} = await axios.get(`users?page=${page}`);
       this.users = data.data;
       this.lastPage = data.meta.last_page;
-    },
-    async next() {
-      if(this.page < this.lastPage) {
-        this.page++
-      }
-    },
-    async prev() {
-      if(this.page > 1){
-        this.page--
-      }
     },
     async del(id: number) {
       if(confirm('Ar you sure ?')) {

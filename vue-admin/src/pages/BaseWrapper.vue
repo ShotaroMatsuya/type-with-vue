@@ -11,7 +11,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import HeaderNav from '@/components/HeaderNav.vue';
 import HeaderMenu from '@/components/HeaderMenu.vue';
 import axios from 'axios';
@@ -28,7 +28,7 @@ export default {
   async mounted() {
     try {
       const { data } = await axios.get('user');
-      console.log(data);
+      await this.$store.dispatch('setUser', data)
     } catch (e) {
       this.$router.push('/login');
     }

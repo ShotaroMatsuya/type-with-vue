@@ -47,18 +47,24 @@ export default {
       }
     }
   },
-  async mounted() {
-    const { data } = await axios.get('user');
-
-    this.infoData = {
-      first_name: data.first_name,
-      last_name: data.last_name,
-      email: data.email
+  watch: {
+    user(val) {
+      this.infoData = {
+        first_name: val.first_name,
+        last_name: val.last_name,
+        email: val.email
+      }
+    }
+  },
+  computed: {
+    user() {
+      return this.$store.state.user;
     }
   },
   methods: {
     async infoSubmit() {
-      await axios.put('users/info', this.infoData)
+      const { data } = await axios.put('users/info', this.infoData);
+      await this.$store.dispatch('setUser', data);
     },
     async passwordSubmit() {
       await axios.put('users/password', this.passwordData)

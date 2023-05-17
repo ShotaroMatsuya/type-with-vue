@@ -20,9 +20,15 @@ export default {
       name: '',
     };
   },
-  async mounted() {
-    const { data } = await axios.get('user');
-    this.name = data.first_name + ' ' + data.last_name;
+  watch: {
+    user(val) {
+      this.name = val.first_name + ' ' + val.last_name;
+    }
+  },
+  computed: {
+    user() {
+      return this.$store.state.user;
+    }
   },
   methods: {
     async logout() {

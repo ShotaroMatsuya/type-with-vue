@@ -28,7 +28,7 @@ export default {
   async mounted() {
     try {
       const { data } = await axios.get('user');
-      await this.$store.dispatch('setUser', data)
+      await this.$store.dispatch('User/setUser', data)
     } catch (e) {
       this.$router.push('/login');
     }

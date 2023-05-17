@@ -58,13 +58,13 @@ export default {
   },
   computed: {
     user() {
-      return this.$store.state.user;
+      return this.$store.state.User.user;
     }
   },
   methods: {
     async infoSubmit() {
       const { data } = await axios.put('users/info', this.infoData);
-      await this.$store.dispatch('setUser', data);
+      await this.$store.dispatch('User/setUser', data);
     },
     async passwordSubmit() {
       await axios.put('users/password', this.passwordData)

@@ -105,7 +105,7 @@ export const UpdateInfo = async (req: Request, res: Response) => {
 };
 
 export const updatePassword: RequestHandler = async (req, res) => {
-  const user = (req.body as { user: User }).user; // パターン1
+  const user: UserInput = req["user"]; // パターン2
 
   if (req.body.password !== req.body.password_confirm) {
     return res.status(400).send({

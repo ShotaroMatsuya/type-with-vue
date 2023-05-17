@@ -1,1 +1,3 @@
-<template>Dashboard</template>
+<template>
+  Dashboard
+</template>

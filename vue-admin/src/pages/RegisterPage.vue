@@ -1,65 +1,28 @@
 <template>
   <main class="form-signin">
     <form @submit.prevent="submit">
-      <img
-        class="mb-4"
-        src="../images/vue-svgrepo-com.svg"
-        alt=""
-        width="72"
-        height="57"
-      />
+      <img class="mb-4" src="../images/vue-svgrepo-com.svg" alt="" width="72" height="57" />
       <h1 class="h3 mb-3 fw-normal">Please register</h1>
       <div class="form-floating">
-        <input
-          id="floatingFirstName"
-          v-model="firstName"
-          class="form-control"
-          placeholder="First Name"
-          required
-        />
+        <input id="floatingFirstName" v-model="firstName" class="form-control" placeholder="First Name" required />
         <label for="floatingFirstName">First Name</label>
       </div>
       <div class="form-floating">
-        <input
-          id="floatingLastName"
-          v-model="lastName"
-          class="form-control"
-          placeholder="Last Name"
-          required
-        />
+        <input id="floatingLastName" v-model="lastName" class="form-control" placeholder="Last Name" required />
         <label for="floatingLastName">Last Name</label>
       </div>
       <div class="form-floating">
-        <input
-          id="floatingEmail"
-          v-model="email"
-          type="email"
-          class="form-control"
-          placeholder="Email"
-          required
-        />
+        <input id="floatingEmail" v-model="email" type="email" class="form-control" placeholder="Email" required />
         <label for="floatingEmail">Email</label>
       </div>
       <div class="form-floating">
-        <input
-          id="floatingPassword"
-          v-model="password"
-          type="password"
-          class="form-control"
-          placeholder="Password"
-          required
-        />
+        <input id="floatingPassword" v-model="password" type="password" class="form-control" placeholder="Password"
+          required />
         <label for="floatingPassword">Password</label>
       </div>
       <div class="form-floating">
-        <input
-          id="floatingPasswordConfirm"
-          v-model="passwordConfirm"
-          type="password"
-          class="form-control"
-          placeholder="Password Confirm"
-          required
-        />
+        <input id="floatingPasswordConfirm" v-model="passwordConfirm" type="password" class="form-control"
+          placeholder="Password Confirm" required />
         <label for="floatingPasswordConfirm">Password Confirm</label>
       </div>
       <button class="w-100 btn btn-lg btn-primary" type="submit">Submit</button>

@@ -1,9 +1,9 @@
-import { Request, Response, RequestHandler } from 'express';
-import { RegisterValidation } from '../validation/register.validation';
-import { getManager } from 'typeorm';
-import { User } from '../entity/user.entity';
-import bcryptjs from 'bcryptjs';
-import { sign, verify } from 'jsonwebtoken';
+import { Request, Response, RequestHandler } from "express";
+import { RegisterValidation } from "../validation/register.validation";
+import { getManager } from "typeorm";
+import { User } from "../entity/user.entity";
+import bcryptjs from "bcryptjs";
+import { sign, verify } from "jsonwebtoken";
 
 // bodyオブジェクトの型指定
 interface UserInput {
@@ -49,13 +49,13 @@ export const Login = async (req: Request, res: Response) => {
 
   if (!user) {
     return res.status(404).send({
-      message: 'invalid credentials!',
+      message: "invalid credentials!",
     });
   }
 
   if (!(await bcryptjs.compare(req.body.password, user.password))) {
     return res.status(400).send({
-      message: 'invalid credentials!',
+      message: "invalid credentials!",
     });
   }
 
@@ -69,31 +69,31 @@ export const Login = async (req: Request, res: Response) => {
   // httpOnly cookie
   // It's only the feature of each of the only cookies is that they are not accessible by the frontend only.
   // backend can use these cookie, which means that frontend cannot access it.
-  res.cookie('jwt', token, {
+  res.cookie("jwt", token, {
     httpOnly: true,
     maxAge: 24 * 60 * 60 * 1000, // 1day
   });
   res.send({
-    message: 'success',
+    message: "success",
   });
 };
 
 export const AuthenticatedUser = async (req: Request, res: Response) => {
-  const { password, ...user } = req['user'];
+  const { password, ...user } = req["user"];
   res.send(user);
 };
 
 export const Logout = async (req: Request, res: Response) => {
-  res.cookie('jwt', '', {
+  res.cookie("jwt", "", {
     maxAge: 0,
   });
   res.send({
-    message: 'success',
+    message: "success",
   });
 };
 
 export const UpdateInfo = async (req: Request, res: Response) => {
-  const user: UserInput = req['user']; // パターン2
+  const user: UserInput = req["user"]; // パターン2
 
   const repository = getManager().getRepository(User);
 

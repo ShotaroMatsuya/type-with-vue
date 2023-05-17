@@ -1,4 +1,4 @@
-import { Joi } from 'express-validation';
+import { Joi } from "express-validation";
 
 export const RegisterValidation = Joi.object({
   first_name: Joi.string().required(),

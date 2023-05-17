@@ -1,22 +1,22 @@
-import { Request, response, Response } from 'express';
-import { getManager } from 'typeorm';
-import { User } from '../entity/user.entity';
-import bcryptjs from 'bcryptjs';
+import { Request, response, Response } from "express";
+import { getManager } from "typeorm";
+import { User } from "../entity/user.entity";
+import bcryptjs from "bcryptjs";
 
 export const Users = async (req: Request, res: Response) => {
   const take = 15;
-  const page = parseInt((req.query.page as string) || '1');
+  const page = parseInt((req.query.page as string) || "1");
 
   const repository = getManager().getRepository(User);
 
   const [data, total] = await repository.findAndCount({
     take,
     skip: (page - 1) * take,
-    relations: ['role'],
+    relations: ["role"],
   });
 
   res.send({
-    data: data.map(u => {
+    data: data.map((u) => {
       const { password, ...data } = u;
       return data;
     }),
@@ -30,7 +30,7 @@ export const Users = async (req: Request, res: Response) => {
 
 export const CreateUser = async (req: Request, res: Response) => {
   const { role_id, ...body } = req.body;
-  const hashedPassword = await bcryptjs.hash('1234', 10);
+  const hashedPassword = await bcryptjs.hash("1234", 10);
 
   const repository = getManager().getRepository(User);
 
@@ -49,7 +49,7 @@ export const GetUser = async (req: Request, res: Response) => {
   const repository = getManager().getRepository(User);
 
   const { password, ...user } = await repository.findOne(req.params.id, {
-    relations: ['role'],
+    relations: ["role"],
   });
 
   res.send(user);
@@ -68,7 +68,7 @@ export const UpdateUser = async (req: Request, res: Response) => {
   });
 
   const { password, ...user } = await repository.findOne(req.params.id, {
-    relations: ['role'],
+    relations: ["role"],
   });
 
   res.status(202).send(user);

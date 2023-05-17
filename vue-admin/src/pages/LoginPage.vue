@@ -1,35 +1,16 @@
 <template>
   <main class="form-signin">
     <form @submit.prevent="submit">
-      <img
-        class="mb-4"
-        src="../images/nuxt-seeklogo.com.svg"
-        alt=""
-        width="72"
-        height="57"
-      />
+      <img class="mb-4" src="../images/nuxt-seeklogo.com.svg" alt="" width="72" height="57" />
       <h1 class="h3 mb-3 fw-normal">Please Sign In</h1>
 
       <div class="form-floating">
-        <input
-          id="floatingEmail"
-          v-model="email"
-          type="email"
-          class="form-control"
-          placeholder="Email"
-          required
-        />
+        <input id="floatingEmail" v-model="email" type="email" class="form-control" placeholder="Email" required />
         <label for="floatingEmail">Email</label>
       </div>
       <div class="form-floating">
-        <input
-          id="floatingPassword"
-          v-model="password"
-          type="password"
-          class="form-control"
-          placeholder="Password"
-          required
-        />
+        <input id="floatingPassword" v-model="password" type="password" class="form-control" placeholder="Password"
+          required />
         <label for="floatingPassword">Password</label>
       </div>
 

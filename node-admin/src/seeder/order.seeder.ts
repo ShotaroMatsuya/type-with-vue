@@ -1,10 +1,10 @@
-import { createConnection, getManager } from 'typeorm';
-import faker from 'faker';
-import { randomInt } from 'crypto';
-import { Order } from '../entity/order.entity';
-import { OrderItem } from '../entity/order-item.entity';
+import { createConnection, getManager } from "typeorm";
+import faker from "faker";
+import { randomInt } from "crypto";
+import { Order } from "../entity/order.entity";
+import { OrderItem } from "../entity/order-item.entity";
 
-createConnection().then(async connection => {
+createConnection().then(async (connection) => {
   const orderRepository = getManager().getRepository(Order);
   const orderItemRepository = getManager().getRepository(OrderItem);
 

@@ -1,10 +1,10 @@
-import { Request, response, Response } from 'express';
-import { getManager } from 'typeorm';
-import { Product } from '../entity/product.entity';
+import { Request, response, Response } from "express";
+import { getManager } from "typeorm";
+import { Product } from "../entity/product.entity";
 
 export const Products = async (req: Request, res: Response) => {
   const take = 15;
-  const page = parseInt((req.query.page as string) || '1');
+  const page = parseInt((req.query.page as string) || "1");
 
   const repository = getManager().getRepository(Product);
 

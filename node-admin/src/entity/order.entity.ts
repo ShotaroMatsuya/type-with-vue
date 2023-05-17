@@ -4,8 +4,8 @@ import {
   Entity,
   OneToMany,
   PrimaryGeneratedColumn,
-} from 'typeorm';
-import { OrderItem } from './order-item.entity';
+} from "typeorm";
+import { OrderItem } from "./order-item.entity";
 
 @Entity()
 export class Order {
@@ -24,7 +24,7 @@ export class Order {
   @CreateDateColumn()
   created_at: string;
 
-  @OneToMany(() => OrderItem, orderItem => orderItem.order)
+  @OneToMany(() => OrderItem, (orderItem) => orderItem.order)
   order_items: OrderItem[];
 
   get name(): string {

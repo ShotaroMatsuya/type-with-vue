@@ -15,10 +15,10 @@
       </thead>
       <tbody>
         <tr v-for="user in users" :key="user.id">
-          <td>{{user.id}}</td>
-          <td>{{user.first_name}} {{user.last_name}}</td>
-          <td>{{user.email}}</td>
-          <td>{{user.role.name}}</td>
+          <td>{{ user.id }}</td>
+          <td>{{ user.first_name }} {{ user.last_name }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.role.name }}</td>
           <td>
             <div class="btn-group mr-2">
               <router-link :to="`/users/${user.id}/edit`" class="btn btn-sm btn-outline-secondary">Edit</router-link>
@@ -29,17 +29,16 @@
       </tbody>
     </table>
   </div>
-  <ButtonPaginator :last-page="lastPage" @page-changed="load($event)"/>
-
+  <ButtonPaginator :last-page="lastPage" @page-changed="load($event)" />
 </template>
 
 <script lang="ts">
 import axios from 'axios';
-import {User} from '@/models/user'
+import { User } from '@/models/user'
 import ButtonPaginator from '@/components/ButtonPaginator.vue'
 export default {
   name: 'UsersPage',
-  components: {ButtonPaginator},
+  components: { ButtonPaginator },
   data() {
     return {
       users: [] as Array<any>,
@@ -56,12 +55,12 @@ export default {
   },
   methods: {
     async load(page = 1) {
-      const {data} = await axios.get(`users?page=${page}`);
+      const { data } = await axios.get(`users?page=${page}`);
       this.users = data.data;
       this.lastPage = data.meta.last_page;
     },
     async del(id: number) {
-      if(confirm('Ar you sure ?')) {
+      if (confirm('Ar you sure ?')) {
         await axios.delete(`users/${id}`)
 
         this.users = this.users.filter((u: User) => u.id !== id)

@@ -10,15 +10,15 @@ export default {
     name: "ImageUpload",
     emits: ['uploaded'],
     methods: {
-        async upload(e: Event) {
-            const {target} = e;
-            if(!(target instanceof HTMLInputElement)) return;
+        async upload (e: Event) {
+            const { target } = e;
+            if (!(target instanceof HTMLInputElement)) return;
             const files: FileList | null = target.files;
-            if(files == null) return;
+            if (files == null) return;
             const formData = new FormData();
             formData.append('image', files[0]);
 
-            const {data} = await axios.post('upload', formData);
+            const { data } = await axios.post('upload', formData);
 
             this.$emit('uploaded', data.url)
         }

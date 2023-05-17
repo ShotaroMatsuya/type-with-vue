@@ -1,19 +1,19 @@
-import { Request, Response } from 'express';
-import { Parser } from 'json2csv';
-import { getManager } from 'typeorm';
-import { OrderItem } from '../entity/order-item.entity';
-import { Order } from '../entity/order.entity';
+import { Request, Response } from "express";
+import { Parser } from "json2csv";
+import { getManager } from "typeorm";
+import { OrderItem } from "../entity/order-item.entity";
+import { Order } from "../entity/order.entity";
 
 export const Orders = async (req: Request, res: Response) => {
   const take = 15;
-  const page = parseInt((req.query.page as string) || '1');
+  const page = parseInt((req.query.page as string) || "1");
 
   const repository = getManager().getRepository(Order);
 
   const [data, total] = await repository.findAndCount({
     take,
     skip: (page - 1) * take,
-    relations: ['order_items'],
+    relations: ["order_items"],
   });
 
   res.send({
@@ -37,12 +37,12 @@ export const Orders = async (req: Request, res: Response) => {
 
 export const Export = async (req: Request, res: Response) => {
   const parser = new Parser({
-    fields: ['ID', ' Name', 'Email', 'Product Title', 'Price', 'Quantity'],
+    fields: ["ID", " Name", "Email", "Product Title", "Price", "Quantity"],
   });
 
   const repository = getManager().getRepository(Order);
 
-  const orders = await repository.find({ relations: ['order_items'] });
+  const orders = await repository.find({ relations: ["order_items"] });
 
   const json = [];
 
@@ -51,17 +51,17 @@ export const Export = async (req: Request, res: Response) => {
       ID: order.id,
       Name: order.name,
       Email: order.email,
-      'Product Title': '',
-      Price: '',
-      Quantity: '',
+      "Product Title": "",
+      Price: "",
+      Quantity: "",
     });
 
     order.order_items.forEach((item: OrderItem) => {
       json.push({
-        ID: '',
-        Name: '',
-        Email: '',
-        'Product Title': item.product_title,
+        ID: "",
+        Name: "",
+        Email: "",
+        "Product Title": item.product_title,
         Price: item.price,
         Quantity: item.quantity,
       });
@@ -70,8 +70,8 @@ export const Export = async (req: Request, res: Response) => {
 
   const csv = parser.parse(json);
 
-  res.header('Content-Type', 'text/csv');
-  res.attachment('orders.csv');
+  res.header("Content-Type", "text/csv");
+  res.attachment("orders.csv");
   res.send(csv);
 };
 

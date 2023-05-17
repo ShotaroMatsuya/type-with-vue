@@ -1,9 +1,9 @@
-import { createConnection, getManager } from 'typeorm';
-import { User } from '../entity/user.entity';
-import faker from 'faker';
-import { Role } from '../entity/role.entity';
+import { createConnection, getManager } from "typeorm";
+import { User } from "../entity/user.entity";
+import faker from "faker";
+import { Role } from "../entity/role.entity";
 
-createConnection().then(async connection => {
+createConnection().then(async (connection) => {
   const repository = getManager().getRepository(User);
   const roleRepository = getManager().getRepository(Role);
 
@@ -13,7 +13,9 @@ createConnection().then(async connection => {
       last_name: faker.name.lastName(),
       email: faker.internet.email(),
       password: faker.internet.password(20),
-      role: await roleRepository.findOne(faker.datatype.number({ min: 1, max: 3 }))
+      role: await roleRepository.findOne(
+        faker.datatype.number({ min: 1, max: 3 })
+      ),
     });
   }
 

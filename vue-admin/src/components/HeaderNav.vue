@@ -1,23 +1,11 @@
 <template>
-  <header
-    class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow"
-  >
-    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#"
-      >Company name</a
-    >
+  <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Company name</a>
 
     <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
-      <router-link
-        to="/profile"
-        class="nav-link px-3 text-white text-decoration-none"
-        >{{ name }}</router-link
-      >
-      <router-link
-        to="/login"
-        class="nav-link px-3 text-white text-decoration-none"
-        @click="logout"
-        >Sign out</router-link
-      >
+      <router-link to="/profile" class="nav-link px-3 text-white text-decoration-none">{{ name }}</router-link>
+      <router-link to="/login" class="nav-link px-3 text-white text-decoration-none" @click="logout">Sign
+        out</router-link>
     </nav>
   </header>
 </template>

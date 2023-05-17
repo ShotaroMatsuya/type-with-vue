@@ -1,19 +1,19 @@
-import { createConnection, getManager } from 'typeorm';
-import { Permission } from '../entity/permission.entity';
-import { Role } from '../entity/role.entity';
+import { createConnection, getManager } from "typeorm";
+import { Permission } from "../entity/permission.entity";
+import { Role } from "../entity/role.entity";
 
-createConnection().then(async connection => {
+createConnection().then(async (connection) => {
   const permissionRepository = getManager().getRepository(Permission);
 
   const perms = [
-    'view_users',
-    'edit_users',
-    'view_roles',
-    'edit_roles',
-    'view_products',
-    'edit_products',
-    'view_orders',
-    'edit_orders',
+    "view_users",
+    "edit_users",
+    "view_roles",
+    "edit_roles",
+    "view_products",
+    "edit_products",
+    "view_orders",
+    "edit_orders",
   ];
 
   let permissions = [];
@@ -28,14 +28,14 @@ createConnection().then(async connection => {
   const roleRepository = getManager().getRepository(Role);
 
   await roleRepository.save({
-    name: 'Admin',
+    name: "Admin",
     permissions,
   });
 
   delete permissions[3]; //temporarily delete values from array(but still index remain there)
 
   await roleRepository.save({
-    name: 'Editor',
+    name: "Editor",
     permissions,
   });
 
@@ -44,7 +44,7 @@ createConnection().then(async connection => {
   delete permissions[7];
 
   await roleRepository.save({
-    name: 'Viewer',
+    name: "Viewer",
     permissions,
   });
 

@@ -1,14 +1,14 @@
-require('dotenv').config();
+require("dotenv").config();
 
-import express from 'express';
+import express from "express";
 
-import cors from 'cors';
-import { routes } from './routes';
-import { createConnection } from 'typeorm';
-import cookieParser from 'cookie-parser';
+import cors from "cors";
+import { routes } from "./routes";
+import { createConnection } from "typeorm";
+import cookieParser from "cookie-parser";
 
 createConnection()
-  .then(connection => {
+  .then((connection) => {
     const app = express();
 
     app.use(express.json());
@@ -16,16 +16,16 @@ createConnection()
     app.use(
       cors({
         credentials: true,
-        origin: ['http://localhost:8080'],
+        origin: ["http://localhost:8080"],
       })
     );
 
     routes(app);
 
     app.listen(8000, () => {
-      console.log('listening to port 8000');
+      console.log("listening to port 8000");
     });
   })
-  .catch(err => {
+  .catch((err) => {
     console.log(err);
   });

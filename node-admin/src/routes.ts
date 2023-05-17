@@ -1,4 +1,4 @@
-import express, { Router } from 'express';
+import express, { Router } from "express";
 import {
   AuthenticatedUser,
   Login,
@@ -6,9 +6,9 @@ import {
   Register,
   UpdateInfo,
   updatePassword,
-} from './controller/auth.controller';
+} from "./controller/auth.controller";
 
-import { AuthMiddleware } from './middleware/auth.middleware';
+import { AuthMiddleware } from "./middleware/auth.middleware";
 
 import {
   Users,
@@ -16,134 +16,134 @@ import {
   GetUser,
   UpdateUser,
   DeleteUser,
-} from './controller/user.controller';
-import { Permissions } from './controller/permission.controller';
+} from "./controller/user.controller";
+import { Permissions } from "./controller/permission.controller";
 import {
   Roles,
   CreateRole,
   GetRole,
   UpdateRole,
   DeleteRole,
-} from './controller/role.controller';
+} from "./controller/role.controller";
 import {
   CreateProduct,
   DeleteProduct,
   GetProduct,
   Products,
   UpdateProduct,
-} from './controller/product.controller';
-import { Upload } from './controller/image.controller';
-import { Chart, Export, Orders } from './controller/order.cotroller';
-import { PermissionMiddleware } from './middleware/permission.middleware';
+} from "./controller/product.controller";
+import { Upload } from "./controller/image.controller";
+import { Chart, Export, Orders } from "./controller/order.cotroller";
+import { PermissionMiddleware } from "./middleware/permission.middleware";
 
 export const routes = (router: Router) => {
-  router.post('/api/register', Register);
-  router.post('/api/login', Login);
-  router.get('/api/user', AuthMiddleware, AuthenticatedUser);
-  router.post('/api/logout', AuthMiddleware, Logout);
-  router.put('/api/users/info', AuthMiddleware, UpdateInfo);
-  router.put('/api/users/password', AuthMiddleware, updatePassword);
+  router.post("/api/register", Register);
+  router.post("/api/login", Login);
+  router.get("/api/user", AuthMiddleware, AuthenticatedUser);
+  router.post("/api/logout", AuthMiddleware, Logout);
+  router.put("/api/users/info", AuthMiddleware, UpdateInfo);
+  router.put("/api/users/password", AuthMiddleware, updatePassword);
 
   router.get(
-    '/api/users',
+    "/api/users",
     AuthMiddleware,
-    PermissionMiddleware('users'),
+    PermissionMiddleware("users"),
     Users
   );
   router.post(
-    '/api/users',
+    "/api/users",
     AuthMiddleware,
-    PermissionMiddleware('users'),
+    PermissionMiddleware("users"),
     CreateUser
   );
   router.get(
-    '/api/users/:id',
+    "/api/users/:id",
     AuthMiddleware,
-    PermissionMiddleware('users'),
+    PermissionMiddleware("users"),
     GetUser
   );
   router.put(
-    '/api/users/:id',
+    "/api/users/:id",
     AuthMiddleware,
-    PermissionMiddleware('users'),
+    PermissionMiddleware("users"),
     UpdateUser
   );
   router.delete(
-    '/api/users/:id',
+    "/api/users/:id",
     AuthMiddleware,
-    PermissionMiddleware('users'),
+    PermissionMiddleware("users"),
     DeleteUser
   );
 
-  router.get('/api/permissions', AuthMiddleware, Permissions);
+  router.get("/api/permissions", AuthMiddleware, Permissions);
 
   router.get(
-    '/api/roles',
+    "/api/roles",
     AuthMiddleware,
-    PermissionMiddleware('roles'),
+    PermissionMiddleware("roles"),
     Roles
   );
   router.post(
-    '/api/roles',
+    "/api/roles",
     AuthMiddleware,
-    PermissionMiddleware('roles'),
+    PermissionMiddleware("roles"),
     CreateRole
   );
   router.get(
-    '/api/roles/:id',
+    "/api/roles/:id",
     AuthMiddleware,
-    PermissionMiddleware('roles'),
+    PermissionMiddleware("roles"),
     GetRole
   );
   router.put(
-    '/api/roles/:id',
+    "/api/roles/:id",
     AuthMiddleware,
-    PermissionMiddleware('roles'),
+    PermissionMiddleware("roles"),
     UpdateRole
   );
   router.delete(
-    '/api/roles/:id',
+    "/api/roles/:id",
     AuthMiddleware,
-    PermissionMiddleware('roles'),
+    PermissionMiddleware("roles"),
     DeleteRole
   );
 
   router.get(
-    '/api/products',
+    "/api/products",
     AuthMiddleware,
-    PermissionMiddleware('products'),
+    PermissionMiddleware("products"),
     Products
   );
   router.post(
-    '/api/products',
+    "/api/products",
     AuthMiddleware,
-    PermissionMiddleware('products'),
+    PermissionMiddleware("products"),
     CreateProduct
   );
   router.get(
-    '/api/products/:id',
+    "/api/products/:id",
     AuthMiddleware,
-    PermissionMiddleware('products'),
+    PermissionMiddleware("products"),
     GetProduct
   );
   router.put(
-    '/api/products/:id',
+    "/api/products/:id",
     AuthMiddleware,
-    PermissionMiddleware('products'),
+    PermissionMiddleware("products"),
     UpdateProduct
   );
   router.delete(
-    '/api/products/:id',
+    "/api/products/:id",
     AuthMiddleware,
-    PermissionMiddleware('products'),
+    PermissionMiddleware("products"),
     DeleteProduct
   );
 
-  router.post('/api/upload', AuthMiddleware, Upload);
-  router.use('/api/uploads', express.static('./uploads'));
+  router.post("/api/upload", AuthMiddleware, Upload);
+  router.use("/api/uploads", express.static("./uploads"));
 
-  router.get('/api/orders', AuthMiddleware, Orders);
+  router.get("/api/orders", AuthMiddleware, Orders);
 
-  router.post('/api/export', AuthMiddleware, Export);
-  router.get('/api/chart', AuthMiddleware, Chart);
+  router.post("/api/export", AuthMiddleware, Export);
+  router.get("/api/chart", AuthMiddleware, Chart);
 };

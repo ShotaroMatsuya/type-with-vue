@@ -4,8 +4,8 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
-} from 'typeorm';
-import { Order } from './order.entity';
+} from "typeorm";
+import { Order } from "./order.entity";
 
 @Entity()
 export class OrderItem {
@@ -22,6 +22,6 @@ export class OrderItem {
   quantity: number;
 
   @ManyToOne(() => Order)
-  @JoinColumn({ name: 'order_id' })
+  @JoinColumn({ name: "order_id" })
   order: Order;
 }

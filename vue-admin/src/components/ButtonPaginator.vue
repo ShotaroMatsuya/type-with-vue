@@ -1,5 +1,5 @@
 <template>
-      <nav>
+  <nav>
     <ul class="pagination">
       <li class="page-item">
         <a href="javascript:void(0)" class="page-link" @click="prev">Previous</a>
@@ -17,7 +17,7 @@ export default {
   props: {
     lastPage: Number
   },
-  emits:['page-changed'],
+  emits: ['page-changed'],
   data() {
     return {
       users: [] as Array<any>,
@@ -31,14 +31,14 @@ export default {
   },
   methods: {
     async next() {
-      if(this.lastPage !== undefined) {
-        if(this.page < this.lastPage) {
+      if (this.lastPage !== undefined) {
+        if (this.page < this.lastPage) {
           this.page++
         }
       }
     },
     async prev() {
-      if(this.page > 1){
+      if (this.page > 1) {
         this.page--
       }
     }

@@ -26,29 +26,39 @@
 </template>
 
 <script lang="ts">
-import axios from 'axios'
+import { reactive, ref, onMounted } from "vue";
+import axios from 'axios';
+import { useRouter } from "vue-router";
+import { Role } from '@/models/role'
+
 export default {
   name: "UserCreate",
-  data() {
-    return {
-      form: {
-        first_name: '',
-        last_name: '',
-        email: '',
-        role_id: ''
-      },
-      roles: [] as Array<any>
-    }
-  },
-  async mounted() {
-    const { data } = await axios.get('roles')
+  setup() {
+    const form = reactive({
+      first_name: '',
+      last_name: '',
+      email: '',
+      role_id: ''
+    });
+    const roles = ref<Role[]>([]);
+    const router = useRouter();
 
-    this.roles = data;
-  },
-  methods: {
-    async submit() {
-      await axios.post('users', this.form)
-      await this.$router.push('/users')
+    onMounted(async () => {
+      const { data } = await axios.get('roles');
+
+      roles.value = data;
+    });
+
+    const submit = async () => {
+      await axios.post('users', form);
+
+      await router.push('/users');
+    }
+
+    return {
+      form,
+      roles,
+      submit
     }
   }
 }

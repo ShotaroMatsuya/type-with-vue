@@ -11,29 +11,30 @@
 </template>
 
 <script lang="ts">
-import axios from 'axios';
+import { ref, computed, watch } from "vue";
+import axios from "axios";
+import { useStore } from "vuex";
 
 export default {
   name: 'HeaderNav',
-  data() {
-    return {
-      name: '',
-    };
-  },
-  watch: {
-    user(val) {
-      this.name = val.first_name + ' ' + val.last_name;
-    }
-  },
-  computed: {
-    user() {
-      return this.$store.state.User.user;
-    }
-  },
-  methods: {
-    async logout() {
+  setup() {
+    const name = ref('');
+    const store = useStore();
+
+    const user = computed(() => store.state.User.user);
+
+    watch(user, () => {
+      name.value = user.value.first_name + ' ' + user.value.last_name;
+    });
+
+    const logout = async () => {
       await axios.post('logout');
-    },
-  },
+    }
+
+    return {
+      name,
+      logout
+    }
+  }
 };
 </script>

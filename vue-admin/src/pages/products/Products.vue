@@ -37,38 +37,40 @@
 </template>
 
 <script lang="ts">
+import { onMounted, ref } from 'vue';
 import axios from 'axios';
-import { Product } from '@/models/product'
+import { Product } from "@/models/product";
 import ButtonPaginator from '@/components/ButtonPaginator.vue'
+
 export default {
   name: 'ProductsPage',
   components: { ButtonPaginator },
-  data() {
-    return {
-      products: [] as Array<any>,
-      lastPage: 0
-    }
-  },
-  async mounted() {
-    await this.load()
-  },
-  watch: {
-    page() {
-      this.load()
-    }
-  },
-  methods: {
-    async load(page = 1) {
-      const { data } = await axios.get(`products?page=${page}`);
-      this.products = data.data;
-      this.lastPage = data.meta.last_page;
-    },
-    async del(id: number) {
-      if (confirm('Ar you sure ?')) {
-        await axios.delete(`products/${id}`)
+  setup() {
+    const products = ref<Product[]>([]);
+    const lastPage = ref(0);
 
-        this.products = this.products.filter((p: Product) => p.id !== id)
+    const load = async (page = 1) => {
+      const { data } = await axios.get(`products?page=${page}`);
+
+      products.value = data.data;
+      lastPage.value = data.meta.last_page;
+    };
+
+    onMounted(load);
+
+    const del = async (id: number) => {
+      if (confirm('Are you sure?')) {
+        await axios.delete(`products/${id}`);
+
+        products.value = products.value.filter((p: any) => p.id !== id);
       }
+    }
+
+    return {
+      products,
+      lastPage,
+      del,
+      load
     }
   }
 }

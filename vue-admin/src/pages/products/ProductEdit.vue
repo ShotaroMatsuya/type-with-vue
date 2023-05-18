@@ -24,29 +24,43 @@
 </template>
 
 <script lang="ts">
-import axios from 'axios'
-import ImageUpload from '@/components/ImageUpload.vue'
+import { reactive, onMounted } from 'vue';
+import axios from 'axios';
+import { useRoute, useRouter } from "vue-router";
+import ImageUpload from "@/components/ImageUpload.vue";
+
 export default {
   name: "ProductEdit",
   components: { ImageUpload },
-  data() {
-    return {
-      form: {
-        title: '',
-        description: '',
-        image: '',
-        price: ''
-      },
+  setup() {
+    const router = useRouter();
+    const route = useRoute();
+
+    const form = reactive({
+      title: '',
+      description: '',
+      image: '',
+      price: ''
+    });
+
+    onMounted(async () => {
+      const response = await axios.get(`products/${route.params.id}`);
+
+      form.title = response.data.title;
+      form.description = response.data.description;
+      form.image = response.data.image;
+      form.price = response.data.price;
+    });
+
+    const submit = async () => {
+      await axios.put(`products/${route.params.id}`, form);
+
+      await router.push('/products');
     }
-  },
-  async mounted() {
-    const response = await axios.get(`products/${this.$route.params.id}`)
-    this.form = { title: response.data.title, description: response.data.description, image: response.data.image, price: response.data.price }
-  },
-  methods: {
-    async submit() {
-      await axios.put(`products/${this.$route.params.id}`, this.form)
-      await this.$router.push('/products')
+
+    return {
+      form,
+      submit
     }
   }
 }

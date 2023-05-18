@@ -12,36 +12,39 @@
 </template>
 
 <script lang="ts">
+import { ref, watch } from "vue";
+
 export default {
   name: 'ButtonPaginator',
   props: {
-    lastPage: Number
+    lastPage: {
+      type: Number,
+      required: true
+    }
   },
   emits: ['page-changed'],
-  data() {
+  setup(props: { lastPage: number }, context) {
+    const page = ref(1);
+
+    watch(page, () => {
+      context.emit('page-changed', page.value);
+    });
+
+    const next = () => {
+      if (page.value < props.lastPage) {
+        page.value++;
+      }
+    }
+
+    const prev = () => {
+      if (page.value > 1) {
+        page.value--;
+      }
+    }
     return {
-      users: [] as Array<any>,
-      page: 1
-    }
-  },
-  watch: {
-    page() {
-      this.$emit('page-changed', this.page)
-    }
-  },
-  methods: {
-    async next() {
-      if (this.lastPage !== undefined) {
-        if (this.page < this.lastPage) {
-          this.page++
-        }
-      }
-    },
-    async prev() {
-      if (this.page > 1) {
-        this.page--
-      }
+      next,
+      prev
     }
   }
-};
+}
 </script>

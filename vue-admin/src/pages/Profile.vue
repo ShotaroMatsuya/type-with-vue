@@ -31,45 +31,50 @@
 </template>
 
 <script lang="ts">
-import axios from 'axios'
+import { reactive, computed, watchEffect } from 'vue';
+import axios from 'axios';
+import { useStore } from "vuex";
+
 export default {
   name: "Profile",
-  data() {
+  setup() {
+    const infoData = reactive({
+      first_name: '',
+      last_name: '',
+      email: ''
+    });
+    const passwordData = reactive({
+      password: '',
+      password_confirm: ''
+    })
+
+    const store = useStore();
+    const user = computed(() => store.getters['User/getCurrentUser']);
+    console.log(user.value)
+
+    watchEffect(() => {
+      infoData.first_name = user.value.first_name;
+      infoData.last_name = user.value.last_name;
+      infoData.email = user.value.email;
+    });
+
+
+    const infoSubmit = async () => {
+      const { data } = await axios.put('users/info', infoData);
+
+      await store.dispatch('User/setUser', data);
+    }
+
+    const passwordSubmit = async () => {
+      await axios.put('users/password', passwordData);
+    }
+
     return {
-      infoData: {
-        first_name: '',
-        last_name: '',
-        email: ''
-      },
-      passwordData: {
-        password: '',
-        password_confirm: ''
-      }
-    }
-  },
-  watch: {
-    user(val) {
-      this.infoData = {
-        first_name: val.first_name,
-        last_name: val.last_name,
-        email: val.email
-      }
-    }
-  },
-  computed: {
-    user() {
-      return this.$store.state.User.user;
-    }
-  },
-  methods: {
-    async infoSubmit() {
-      const { data } = await axios.put('users/info', this.infoData);
-      await this.$store.dispatch('User/setUser', data);
-    },
-    async passwordSubmit() {
-      await axios.put('users/password', this.passwordData)
+      infoData,
+      passwordData,
+      infoSubmit,
+      passwordSubmit
     }
   }
-
 }
 </script>

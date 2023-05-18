@@ -21,53 +21,61 @@
 </template>
 
 <script lang="ts">
-import axios from 'axios'
-import { Permission } from '@/models/permission'
+import { onMounted, reactive, ref } from 'vue';
+import axios from 'axios';
+import { useRoute, useRouter } from "vue-router";
+import { Permission } from "@/models/permission";
 
 export default {
   name: "RoleEdit",
-  data() {
-    return {
-      formData: {
-        permissions: [] as Array<number>,
-        name: ''
-      },
-      permissionList: [] as Array<any>
-    }
-  },
-  async mounted() {
-    const { data } = await axios.get('permissions')
+  setup() {
+    const { push } = useRouter();
+    const { params } = useRoute();
 
-    this.permissionList = data
+    const formData = reactive({
+      name: '',
+      permissions: [] as number[]
+    });
+    const permissionList = ref<Permission[]>([]);
 
-    const response = await axios.get(`roles/${this.$route.params.id}`)
+    onMounted(async () => {
+      const { data } = await axios.get('permissions');
 
-    this.formData.name = response.data.name;
-    this.formData.permissions = response.data.permissions.map((p: Permission) => p.id);
-  },
-  methods: {
-    select(id: number, e: Event) {
+      permissionList.value = data;
+
+      const response = await axios.get(`roles/${params.id}`);
+
+      formData.name = response.data.name;
+      formData.permissions = response.data.permissions.map((p: Permission) => p.id);
+    });
+
+    const select = (id: number, e: Event) => {
       const { target } = e;
       if (!(target instanceof HTMLInputElement)) {
         return; // or throw new TypeError();
       }
       if (target.checked) {
-        this.formData.permissions = [...this.formData.permissions, id]
+        formData.permissions = [...formData.permissions, id]
         return
       }
-      this.formData.permissions = this.formData.permissions.filter(p => p !== id)
-    },
-    async submit() {
-      await axios.post('roles', this.formData);
-      await this.$router.push('/roles')
-    },
-    checked(id: number) {
-      return this.formData.permissions.some(p => p === id);
+      formData.permissions = formData.permissions.filter(p => p !== id)
     }
 
+    const submit = async () => {
+      await axios.put(`roles/${params.id}`, formData);
+
+      await push('/roles');
+    }
+
+    const checked = (id: number) => formData.permissions.some(p => p === id)
+
+    return {
+      formData,
+      permissionList,
+      select,
+      submit,
+      checked
+    }
   }
 }
-
 </script>
-
-<style scoped></style>

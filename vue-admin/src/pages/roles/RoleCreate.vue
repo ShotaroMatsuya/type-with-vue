@@ -20,40 +20,51 @@
 </template>
 
 <script lang="ts">
-import axios from 'axios'
+import { onMounted, reactive, ref } from 'vue';
+import axios from 'axios';
+import { useRouter } from "vue-router";
+import { Permission } from '@/models/permission'
 export default {
   name: "RoleCreate",
-  data() {
-    return {
-      formData: {
-        permissions: [] as Array<number>,
-        name: ''
-      },
-      permissionList: [] as Array<any>
-    }
-  },
-  async mounted() {
-    const { data } = await axios.get('permissions')
+  setup() {
+    const { push } = useRouter();
 
-    this.permissionList = data
-  },
-  methods: {
-    select(id: number, e: Event) {
+    const formData = reactive({
+      name: '',
+      permissions: [] as number[]
+    });
+    const permissionList = ref<Permission[]>([]);
+
+    onMounted(async () => {
+      const { data } = await axios.get('permissions');
+
+      permissionList.value = data;
+    });
+
+    const select = (id: number, e: Event) => {
       const { target } = e;
       if (!(target instanceof HTMLInputElement)) {
         return; // or throw new TypeError();
       }
       if (target.checked) {
-        this.formData.permissions = [...this.formData.permissions, id]
+        formData.permissions = [...formData.permissions, id]
         return
       }
-      this.formData.permissions = this.formData.permissions.filter(p => p !== id)
-    },
-    async submit() {
-      await axios.post('roles', this.formData);
-      await this.$router.push('/roles')
+      formData.permissions = formData.permissions.filter(p => p !== id)
     }
 
+    const submit = async () => {
+      await axios.post('roles', formData);
+
+      await push('/roles');
+    }
+
+    return {
+      formData,
+      permissionList,
+      select,
+      submit
+    }
   }
 }
 

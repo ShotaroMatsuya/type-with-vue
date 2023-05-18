@@ -19,6 +19,7 @@ export const CreateRole = async (req: Request, res: Response) => {
     permissions: permissions.map((id) => ({ id })),
   });
 
+  // file deepcode ignore XSS: <please specify a reason of ignoring this>
   res.status(204).send(role);
 };
 

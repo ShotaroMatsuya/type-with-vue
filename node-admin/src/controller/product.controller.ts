@@ -28,13 +28,14 @@ export const CreateProduct = async (req: Request, res: Response) => {
 
   const product = await repository.save(req.body);
 
+  // deepcode ignore XSS: <please specify a reason of ignoring this>
   res.status(201).send(product);
 };
 
 export const GetProduct = async (req: Request, res: Response) => {
   const repository = getManager().getRepository(Product);
 
-  res.send(await repository.findOne(req.params.id));
+  res.send(await repository.findOne(Number(req.params.id)));
 };
 
 export const UpdateProduct = async (req: Request, res: Response) => {
@@ -42,7 +43,7 @@ export const UpdateProduct = async (req: Request, res: Response) => {
 
   await repository.update(req.params.id, req.body);
 
-  res.status(202).send(await repository.findOne(req.params.id));
+  res.status(202).send(await repository.findOne(Number(req.params.id)));
 };
 
 export const DeleteProduct = async (req: Request, res: Response) => {

@@ -30,7 +30,7 @@ export const Users = async (req: Request, res: Response) => {
 
 export const CreateUser = async (req: Request, res: Response) => {
   const { role_id, ...body } = req.body;
-  const hashedPassword = await bcryptjs.hash("1234", 10);
+  const hashedPassword = await bcryptjs.hash("1234", process.env.SALT_ROUNDS);
 
   const repository = getManager().getRepository(User);
 

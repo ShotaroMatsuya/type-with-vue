@@ -21,7 +21,8 @@ export const Register = async (req: Request, res: Response) => {
   const { error } = RegisterValidation.validate(body);
 
   if (error) {
-    return res.status(400).send(error.details);
+    console.log(error);
+    return res.status(400).send("Something went wrong!");
   }
 
   if (body.password !== body.password_confirm) {
@@ -36,7 +37,7 @@ export const Register = async (req: Request, res: Response) => {
     first_name: body.first_name,
     last_name: body.last_name,
     email: body.email,
-    password: await bcryptjs.hash(body.password, 10),
+    password: await bcryptjs.hash(body.password, process.env.SALT_ROUNDS),
   });
 
   res.send(user);
@@ -114,7 +115,7 @@ export const updatePassword: RequestHandler = async (req, res) => {
   }
   const repository = getManager().getRepository(User);
   await repository.update(user.id, {
-    password: await bcryptjs.hash(req.body.password, 10),
+    password: await bcryptjs.hash(req.body.password, process.env.SALT_ROUNDS),
   });
   const { password, ...data } = user;
   res.send(data);

@@ -37,7 +37,7 @@ export const Orders = async (req: Request, res: Response) => {
 
 export const Export = async (req: Request, res: Response) => {
   const parser = new Parser({
-    fields: ["ID", " Name", "Email", "Product Title", "Price", "Quantity"],
+    fields: ["ID", "Name", "Email", "Product Title", "Price", "Quantity"],
   });
 
   const repository = getManager().getRepository(Order);

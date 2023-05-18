@@ -6,6 +6,9 @@ export default {
   state: {
     user: new User(),
   },
+  getters: {
+    getCurrentUser: (state: { user: User }) => state.user,
+  },
   mutations: {
     SET_USER: (state: { user: User }, user: User) => (state.user = user),
   },

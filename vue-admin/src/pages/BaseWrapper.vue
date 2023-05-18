@@ -15,6 +15,9 @@
 import HeaderNav from '@/components/HeaderNav.vue';
 import HeaderMenu from '@/components/HeaderMenu.vue';
 import axios from 'axios';
+import { onMounted } from 'vue';
+import { useRouter } from "vue-router";
+import { useStore } from "vuex";
 
 export default {
   name: 'BaseWrapper',
@@ -22,16 +25,19 @@ export default {
     HeaderNav,
     HeaderMenu,
   },
-  data() {
-    return {};
-  },
-  async mounted() {
-    try {
-      const { data } = await axios.get('user');
-      await this.$store.dispatch('User/setUser', data)
-    } catch (e) {
-      this.$router.push('/login');
-    }
-  },
+  setup() {
+    const router = useRouter();
+    const store = useStore();
+
+    onMounted(async () => {
+      try {
+        const { data } = await axios.get('user');
+
+        await store.dispatch('User/setUser', data);
+      } catch (e) {
+        await router.push('/login');
+      }
+    });
+  }
 };
 </script>

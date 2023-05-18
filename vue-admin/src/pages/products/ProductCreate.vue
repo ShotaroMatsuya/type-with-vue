@@ -24,25 +24,32 @@
 </template>
 
 <script lang="ts">
-import axios from 'axios'
-import ImageUpload from '@/components/ImageUpload.vue'
+import { reactive } from 'vue';
+import axios from 'axios';
+import { useRouter } from "vue-router";
+import ImageUpload from "@/components/ImageUpload.vue";
 export default {
   name: "ProductCreate",
   components: { ImageUpload },
-  data() {
-    return {
-      form: {
-        title: '',
-        description: '',
-        image: '',
-        price: ''
-      },
+  setup() {
+    const router = useRouter();
+
+    const form = reactive({
+      title: '',
+      description: '',
+      image: '',
+      price: ''
+    });
+
+    const submit = async () => {
+      await axios.post('products', form);
+
+      await router.push('/products');
     }
-  },
-  methods: {
-    async submit() {
-      await axios.post('products', this.form)
-      await this.$router.push('/products')
+
+    return {
+      form,
+      submit
     }
   }
 }

@@ -28,25 +28,32 @@
 </template>
   
 <script lang="ts">
+import { ref, onMounted } from 'vue';
 import axios from 'axios';
-import { Role } from '@/models/role'
+import { Role } from "@/models/role";
+
 export default {
   name: 'RolesPage',
-  data() {
-    return {
-      roles: [] as Array<any>,
-    }
-  },
-  async mounted() {
-    const { data } = await axios.get('roles');
-    this.roles = data
-  },
-  methods: {
-    async del(id: number) {
+  setup() {
+    const roles = ref<Role[]>([]);
+
+    onMounted(async () => {
+      const { data } = await axios.get('roles');
+
+      roles.value = data;
+    });
+
+    const del = async (id: number) => {
       if (confirm('Are you sure?')) {
-        await axios.delete(`roles/${id}`)
-        this.roles = this.roles.filter((r: Role) => r.id !== id)
+        await axios.delete(`roles/${id}`);
+
+        roles.value = roles.value.filter((r: Role) => r.id !== id);
       }
+    }
+
+    return {
+      roles,
+      del
     }
   }
 };

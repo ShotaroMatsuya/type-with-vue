@@ -33,38 +33,39 @@
 </template>
 
 <script lang="ts">
+import { onMounted, ref } from 'vue';
 import axios from 'axios';
-import { User } from '@/models/user'
+import { User } from "@/models/user";
 import ButtonPaginator from '@/components/ButtonPaginator.vue'
 export default {
   name: 'UsersPage',
   components: { ButtonPaginator },
-  data() {
-    return {
-      users: [] as Array<any>,
-      lastPage: 0
-    }
-  },
-  watch: {
-    page() {
-      this.load()
-    }
-  },
-  async mounted() {
-    await this.load()
-  },
-  methods: {
-    async load(page = 1) {
-      const { data } = await axios.get(`users?page=${page}`);
-      this.users = data.data;
-      this.lastPage = data.meta.last_page;
-    },
-    async del(id: number) {
-      if (confirm('Ar you sure ?')) {
-        await axios.delete(`users/${id}`)
+  setup() {
+    const users = ref<User[]>([]);
+    const lastPage = ref(0);
 
-        this.users = this.users.filter((u: User) => u.id !== id)
+    const load = async (page = 1) => {
+      const { data } = await axios.get(`users?page=${page}`);
+
+      users.value = data.data;
+      lastPage.value = data.meta.last_page;
+    };
+
+    onMounted(load);
+
+    const del = async (id: number) => {
+      if (confirm('Are you sure?')) {
+        await axios.delete(`users/${id}`);
+
+        users.value = users.value.filter((u: User) => u.id !== id);
       }
+    }
+
+    return {
+      users,
+      lastPage,
+      del,
+      load
     }
   }
 };

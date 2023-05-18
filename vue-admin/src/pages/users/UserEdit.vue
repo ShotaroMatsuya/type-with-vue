@@ -26,34 +26,47 @@
 </template>
 
 <script lang="ts">
-import axios from 'axios'
+import { reactive, ref, onMounted } from "vue";
+import axios from 'axios';
+import { useRoute, useRouter } from "vue-router";
+import { Role } from '@/models/role'
+
 export default {
   name: "UserEditPage",
-  data() {
-    return {
-      data: {
-        first_name: '',
-        last_name: '',
-        email: '',
-        role_id: ''
-      },
-      roles: [] as Array<any>
-    }
-  },
-  async mounted() {
-    const rolesResponse = await axios.get('roles')
+  setup() {
+    const data = reactive({
+      first_name: '',
+      last_name: '',
+      email: '',
+      role_id: ''
+    });
+    const roles = ref<Role[]>([]);
+    const router = useRouter();
+    const route = useRoute();
 
-    this.roles = rolesResponse.data;
-    const response = await axios.get(`users/${this.$route.params.id}`);
-    this.data.first_name = response.data.first_name;
-    this.data.last_name = response.data.last_name;
-    this.data.email = response.data.email;
-    this.data.role_id = response.data.role.id;
-  },
-  methods: {
-    async submit() {
-      await axios.put(`users/${this.$route.params.id}`, this.data)
-      await this.$router.push('/users')
+    onMounted(async () => {
+      const rolesResponse = await axios.get('roles');
+
+      roles.value = rolesResponse.data;
+
+      const response = await axios.get(`users/${route.params.id}`);
+
+      data.first_name = response.data.first_name;
+      data.last_name = response.data.last_name;
+      data.email = response.data.email;
+      data.role_id = response.data.role.id;
+    });
+
+    const submit = async () => {
+      await axios.put(`users/${route.params.id}`, data);
+
+      await router.push('/users');
+    }
+
+    return {
+      data,
+      roles,
+      submit
     }
   }
 }

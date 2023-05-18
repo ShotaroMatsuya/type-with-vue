@@ -59,30 +59,28 @@
 <script lang="ts">
 import axios from 'axios'
 import ButtonPaginator from '@/components/ButtonPaginator.vue'
+import { ref, onMounted } from 'vue';
 
 export default {
   name: "OrdersPage",
   components: { ButtonPaginator },
-  data() {
-    return {
-      orders: [] as Array<any>,
-      lastPage: 0,
-      selected: 0
-    }
-  },
-  async mounted() {
-    this.load()
-  },
-  methods: {
-    async load(page = 1) {
-      const { data } = await axios.get(`orders?page=${page}`)
-      this.orders = data.data
-      this.lastPage = data.meta.last_page;
-    },
-    select(id: number) {
-      this.selected = this.selected !== id ? id : 0;
-    },
-    async exportCSV() {
+  setup() {
+    const orders = ref([] as Array<any>);
+    const lastPage = ref(0);
+    const selected = ref(0);
+
+    const load = async (page = 1) => {
+      const { data } = await axios.get(`orders?page=${page}`);
+
+      orders.value = data.data;
+      lastPage.value = data.meta.last_page;
+    };
+
+    onMounted(load);
+
+    const select = (id: number) => selected.value = selected.value !== id ? id : 0;
+
+    const exportCSV = async () => {
       const { data } = await axios.post('export', {}, { responseType: 'blob' })
       const blob = new Blob([data], { type: 'text/csv' })
       const link = document.createElement('a')
@@ -90,8 +88,16 @@ export default {
       link.download = 'orders.csv'
       link.click();
     }
-  }
 
+    return {
+      orders,
+      lastPage,
+      selected,
+      load,
+      select,
+      exportCSV
+    }
+  }
 }
 </script>
 

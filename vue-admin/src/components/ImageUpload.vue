@@ -1,28 +1,34 @@
 <template>
-    <label class="btn btn-primary">
-        Upload <input type="file" hidden @change="upload($event)">
-    </label>
+  <label class="btn btn-primary">
+    Upload <input type="file" hidden @change="upload($event)">
+  </label>
 </template>
 
 <script lang="ts">
-import axios from 'axios'
+import axios from 'axios';
+import { SetupContext } from 'vue';
+
 export default {
-    name: "ImageUpload",
-    emits: ['uploaded'],
-    methods: {
-        async upload (e: Event) {
-            const { target } = e;
-            if (!(target instanceof HTMLInputElement)) return;
-            const files: FileList | null = target.files;
-            if (files == null) return;
-            const formData = new FormData();
-            formData.append('image', files[0]);
+  name: "ImageUpload",
+  emits: ['uploaded'],
+  setup(props: any, context: SetupContext) {
+    const upload = async (e: Event) => {
+      const { target } = e;
+      if (!(target instanceof HTMLInputElement)) return;
+      const files: FileList | null = target.files;
+      if (files == null) return;
+      const formData = new FormData();
+      formData.append('image', files[0]);
 
-            const { data } = await axios.post('upload', formData);
+      const { data } = await axios.post('upload', formData);
 
-            this.$emit('uploaded', data.url)
-        }
+      context.emit('uploaded', data.url);
     }
+
+    return {
+      upload
+    }
+  }
 }
 </script>
 

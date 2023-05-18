@@ -5,11 +5,11 @@
       <h1 class="h3 mb-3 fw-normal">Please Sign In</h1>
 
       <div class="form-floating">
-        <input id="floatingEmail" v-model="email" type="email" class="form-control" placeholder="Email" required />
+        <input id="floatingEmail" v-model="form.email" type="email" class="form-control" placeholder="Email" required />
         <label for="floatingEmail">Email</label>
       </div>
       <div class="form-floating">
-        <input id="floatingPassword" v-model="password" type="password" class="form-control" placeholder="Password"
+        <input id="floatingPassword" v-model="form.password" type="password" class="form-control" placeholder="Password"
           required />
         <label for="floatingPassword">Password</label>
       </div>
@@ -18,29 +18,35 @@
     </form>
   </main>
 </template>
-<script>
-import axios from 'axios';
+
+<script lang="ts">
+import { reactive } from 'vue';
+import axios from "axios";
+import { useRouter } from "vue-router";
 
 export default {
   name: 'LoginPage',
-  data() {
-    return {
+  setup() {
+    const form = reactive({
       email: '',
-      password: '',
-    };
-  },
-  methods: {
-    async submit() {
-      await axios.post(
-        'login',
-        {
-          email: this.email,
-          password: this.password,
-        }
-      );
-      await this.$router.push('/');
-    },
-  },
+      password: ''
+    });
+    const router = useRouter();
+
+    const submit = async () => {
+      await axios.post('login', {
+        email: form.email,
+        password: form.password
+      });
+
+      await router.push('/');
+    }
+
+    return {
+      form,
+      submit
+    }
+  }
 };
 </script>
 
